@@ -60,4 +60,12 @@
   border-radius: 20px;
   color: white;
   background-color: #cf792e;
+  margin-bottom: 50px;
+}
+
+@media (max-width: 380px) {
+  .quizLogo {
+    width: 300px;
+    height: 300px;
+  }
 }
