@@ -1,0 +1,63 @@
+.questionsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.questionsContainer h1 {
+  font-size: 48px;
+  color: white;
+  margin-bottom: 0;
+}
+
+.questionBox {
+  font-size: 20px;
+  color: white;
+  text-align: center;
+  border: solid;
+  border-radius: 20px;
+  padding: 30px;
+  margin-left: 40px;
+  margin-right: 40px;
+  background-color: #7c7575;
+  border-color: #7c7575;
+  margin-bottom: 50px;
+}
+
+.answerBtn {
+  width: 256px;
+  height: 64px;
+  border-radius: 20px;
+  border: none;
+  margin-bottom: 40px;
+  font-size: 32px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.notanglesBtn {
+  background-color: #417de4;
+}
+
+.structsBtn {
+  background-color: #5b41e6;
+}
+
+.circlesBtn {
+  background-color: #9941e4;
+}
+
+.freeroomsBtn {
+  background-color: #e59842;
+}
+
+.questionsEmote {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}

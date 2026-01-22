@@ -1,8 +1,15 @@
 import styles from './LandingPage.module.css';
 import devsocLogo from './assets/devsocLogo.png';
 import quizLogo from './assets/quizLogo.png';
+import { useNavigate } from 'react-router-dom';
 
 export default function LandingPage() {
+  const navigate = useNavigate();
+
+  const handleStart = () => {
+    navigate('/questions-page');
+  }
+
   return (
     <div className={styles.landingContainer}>
       <img className={styles.logo} src={devsocLogo} alt="DevSoc Logo"/>
@@ -16,7 +23,7 @@ export default function LandingPage() {
         </label>
       </div>
 
-      <button className={styles.startBtn}><b><em>START</em></b></button>
+      <button onClick={handleStart} className={styles.startBtn}><b><em>START</em></b></button>
     </div>
   )
 }
