@@ -10,14 +10,27 @@ export default function QuestionsPage() {
   const [answer, setAnswer] = useState('');
   const [questionNum, setQuestionNum] = useState(1);
   const [question, setQuestion] = useState('');
+  const [index, setIndex] = useState(0);
+  // const [numCorrect, setNumCorrect] = useState(0);
+  const [incorrect, setIncorrect] = useState(false);
 
   useEffect(() => {
     getQuestion();
   });
 
   const getQuestion = () => {
-    setQuestion(questionBank[0].question);
-    setAnswer(questionBank[0].answer);
+    setQuestion(questionBank[index].question);
+    setAnswer(questionBank[index].answer);
+  }
+
+  const handleClick = (ans) => {
+    if (ans === answer) {
+      setIncorrect(false);
+      setIndex(index + 1);
+      getQuestion();
+    } else {
+      setIncorrect(true);
+    }
   }
 
   const questionBank = [
@@ -30,18 +43,20 @@ export default function QuestionsPage() {
       <h1>Question {questionNum}</h1>
       <p className={styles.questionBox}><b>{question}</b></p>
 
-      <button className={`${styles.answerBtn} ${styles.notanglesBtn}`}>
+      {incorrect && <p className={styles.answerBox}><b><em>Incorrect!</em></b> <br /> Correct answer: {answer}</p>}
+
+      <button onClick={() => handleClick('notangles')} className={`${styles.answerBtn} ${styles.notanglesBtn}`}>
         <b>Notangles</b>
       </button>
-      <button className={`${styles.answerBtn} ${styles.structsBtn}`}>
+      <button onClick={() => handleClick('structs')} className={`${styles.answerBtn} ${styles.structsBtn}`}>
         <img src={structsLogo} />
         <b>Structs</b>
       </button>
-      <button className={`${styles.answerBtn} ${styles.circlesBtn}`}>
+      <button onClick={() => handleClick('circles')} className={`${styles.answerBtn} ${styles.circlesBtn}`}>
         <img src={circlesLogo} />
         <b>Circles</b>
       </button>
-      <button className={`${styles.answerBtn} ${styles.freeroomsBtn}`}>
+      <button onClick={() => handleClick('freerooms')} className={`${styles.answerBtn} ${styles.freeroomsBtn}`}>
         <img src={freeroomsLogo} />
         <b>Freerooms</b>
       </button>
