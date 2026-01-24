@@ -69,3 +69,13 @@
     height: 300px;
   }
 }
+
+.error {
+  color: white;
+  text-align: center;
+  padding: 20px;
+  border-left: 10px solid white;
+  background-color: #a93131;
+  width: 250px;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
