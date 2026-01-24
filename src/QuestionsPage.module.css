@@ -42,6 +42,11 @@
   /* box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px; */
 }
 
+.answerBtn:hover {
+  filter: brightness(1.1);
+  transform: scale(1.03);
+}
+
 .notanglesBtn {
   background-color: #417de4;
 }
@@ -57,6 +62,20 @@
 .freeroomsBtn {
   background-color: #e59842;
 }
+
+.unilectivesBtn {
+  background-color: #2c9ece;
+}
+
+.chaosBtn {
+  background-color: #890707;
+}
+
+.warchestBtn {
+  background-color: #31a00c;
+}
+
+.training
 
 .questionsEmote {
   display: flex;
