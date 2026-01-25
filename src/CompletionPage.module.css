@@ -15,4 +15,10 @@
   object-fit: cover;
   display: block;
   margin: 1rem auto;
+  border-radius: 50px;
+}
+
+.resMsg {
+  margin-left: 40px;
+  margin-right: 40px;
 }

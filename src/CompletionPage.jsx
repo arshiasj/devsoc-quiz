@@ -22,7 +22,7 @@ export default function CompletionPage() {
 		"Congrats you passed. I'll give you a crisp high five and send you on your way knowing you are the DevSoc equivalent of the barely passing student with 50 WAM <3",
 		"Congrats on the credit WAM. They say Ps get degrees but in compsci, if you don't have a WAM of 100, haven't yet founded a start-up and have less than 10 internships, you're cooked",
 		"You were so close to glory but unfortunately, getting one question wrong puts you at around 1000th place because of the number of people taking this quiz",
-		"Wow, a full score! Show one of the helpers at the stall for your prize. Comgrats on either being able to read a flyer or having enough focus despite the moshpit at O-week"
+		"Wow, a full score! Show one of the helpers at the stall for your prize. Congrats on either being able to read a flyer or having enough focus despite the moshpit at O-week"
 	]
 
 	const memes = [
@@ -42,7 +42,7 @@ export default function CompletionPage() {
 				/>
 			)}
 			<h1>You got {numCorrect} out of {total}</h1>
-			<p>{res}</p>
+			<p className={styles.resMsg}>{res}</p>
 		</div>
 	);
 }
