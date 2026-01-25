@@ -7,16 +7,17 @@ import notanglesLogo from './assets/notangles.png';
 import chaosLogo from './assets/chaos.png';
 import unilectivesLogo from './assets/unilectives.png';
 import questionsEmote from './assets/questionsEmote.png';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function QuestionsPage() {
+  const navigate = useNavigate();
   const [answer, setAnswer] = useState('');
-  const [questionNum, setQuestionNum] = useState(1);
   const [question, setQuestion] = useState('');
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [index, setIndex] = useState(0);
   const [options, setOptions] = useState([]);
-  // const [numCorrect, setNumCorrect] = useState(0);
+  const [numCorrect, setNumCorrect] = useState(0);
   const [incorrect, setIncorrect] = useState(false);
 
   useEffect(() => {
@@ -24,19 +25,28 @@ export default function QuestionsPage() {
   }, []);
 
   useEffect(() => {
-    if (index >= shuffledQuestions.length) return;
+    if (shuffledQuestions.length === 0) return;
+
+    if (index >= shuffledQuestions.length && shuffledQuestions.length > 0) {
+      navigate('/completion-page', {
+        state: { numCorrect, total: shuffledQuestions.length }
+      });
+      return;
+    }
 
     const q = shuffledQuestions[index];
     setQuestion(q.question);
     setAnswer(q.answer);
     setOptions(generateOptions(q.answer));
-}, [index, shuffledQuestions]);
+  }, [index, shuffledQuestions]);
 
   const handleClick = (ans) => {
     if (ans === answer) {
+      if (!incorrect) {
+        setNumCorrect(numCorrect + 1);
+      }
       setIncorrect(false);
       setIndex(index + 1);
-      setQuestionNum(questionNum + 1);
     } else {
       setIncorrect(true);
     }
@@ -111,10 +121,10 @@ export default function QuestionsPage() {
 
   return(
     <div className={styles.questionsContainer}>
-      <h1>Question {questionNum}</h1>
+      <h1>Question {index + 1}</h1>
       <p className={styles.questionBox}><b>{question}</b></p>
 
-      {incorrect && <p className={styles.answerBox}><b><em>Incorrect!</em></b> <br /> Correct answer: {answer}</p>}
+      {incorrect && <p className={styles.answerBox}><b><em>Incorrect!</em></b> <br /> Correct answer: {answer.charAt(0).toUpperCase() + answer.slice(1)}</p>}
 
       {
         options.map((option) => (
