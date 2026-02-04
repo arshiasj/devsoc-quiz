@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# admin access to firebase
+firebase-key.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

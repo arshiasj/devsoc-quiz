@@ -6,12 +6,12 @@ import freeroomsLogo from './assets/freerooms.png';
 import notanglesLogo from './assets/notangles.png';
 import chaosLogo from './assets/chaos.png';
 import unilectivesLogo from './assets/unilectives.png';
-import questionsEmote from './assets/questionsEmote.png';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 export default function QuestionsPage() {
   const navigate = useNavigate();
+  const { email } = useLocation().state;
   const [answer, setAnswer] = useState('');
   const [question, setQuestion] = useState('');
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
@@ -29,7 +29,7 @@ export default function QuestionsPage() {
 
     if (index >= shuffledQuestions.length && shuffledQuestions.length > 0) {
       navigate('/completion-page', {
-        state: { numCorrect, total: shuffledQuestions.length }
+        state: { email, numCorrect, total: shuffledQuestions.length }
       });
       return;
     }
@@ -134,10 +134,6 @@ export default function QuestionsPage() {
           </button>
         ))
       }
-      
-      <div className={styles.questionsEmote}>
-        <img src={questionsEmote} />
-      </div>
     </div>
   )
 }

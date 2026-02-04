@@ -2,9 +2,9 @@ import styles from './LandingPage.module.css';
 import devsocLogo from './assets/devsocLogo.png';
 import quizLogo from './assets/quizLogo.png';
 import { useNavigate } from 'react-router-dom';
-import { db } from "./firebase";
+// import { db } from "./firebase";
 import { useState } from 'react';
-import { ref, push } from "firebase/database";
+// import { ref, push } from "firebase/database";
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -16,22 +16,55 @@ export default function LandingPage() {
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
   const handleStart = async () => {
-    if (email && emailConsent) {
-      try {
-        const emailsRef = ref(db, 'emails');
-        console.log(emailsRef);
-        await push(emailsRef, {
-          email: email,
-          timestamp: new Date().toISOString(),
-          consent: emailConsent
-        });
-        console.log('Email saved successfully');
-      } catch (error) {
-        console.error('Error saving email:', error);
-      }
+    // if (email && emailConsent) {
+    //   try {
+    //     const emailsRef = ref(db, 'emails');
+    //     console.log(emailsRef);
+    //     await push(emailsRef, {
+    //       email: email,
+    //       timestamp: new Date().toISOString(),
+    //       consent: emailConsent
+    //     });
+    //     console.log('Email saved successfully');
+    //   } catch (error) {
+    //     console.error('Error saving email:', error);
+    //   }
+    // }
+    // if (email && valid) {
+    //   navigate('/questions-page');
+    // } else {
+    //   setErrorMessage('Email is required');
+    // }
+    if (!email) {
+      setErrorMessage("Email is required");
+      return;
     }
 
-    navigate('/questions-page');
+    if (!valid) {
+      setErrorMessage("Valid email is required");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/start-quiz", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErrorMessage(data.error);
+        return;
+      }
+
+      navigate("/questions-page", { state: { email }});
+    } catch (err) {
+      setErrorMessage("Server error. Please try again");
+    }
   }
 
   const handleEmailInput = (e) => {
@@ -60,13 +93,6 @@ export default function LandingPage() {
       {errorMessage && <p className={styles.error}>{errorMessage}</p>}
       
       <input className={styles.emailInput} type='email' placeholder='Email...' onBlur={(e) => handleEmailInput(e)}/>
-
-      <div className={styles.emailConsent}>
-        <input className={styles.emailNotifs} id='emailNotifs' type='checkbox' checked={emailConsent} onChange={(e) => setEmailConsent(e.target.checked)}/>
-        <label>
-          I agree to receive emails and notifications from DevSoc
-        </label>
-      </div>
 
       <button onClick={handleStart} className={styles.startBtn}><b><em>START</em></b></button>
     </div>

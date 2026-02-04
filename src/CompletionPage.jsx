@@ -8,11 +8,37 @@ import four from "./assets/four.gif";
 import five from "./assets/five.jpg";
 import six from "./assets/six.jpg";
 import seven from "./assets/seven.jpg";
+import { useEffect } from "react";
 
 export default function CompletionPage() {
-	const { state } = useLocation();
-	const numCorrect = state?.numCorrect ?? 0;
-	const total = state?.total ?? 0;
+	const { email, numCorrect, total } = useLocation().state;
+
+	const submitScore = async () => {
+		try {
+			const res = await fetch("/api/submit-quiz", {
+				method: "POST",
+				headers: {
+				"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ email, score: numCorrect }),
+			});
+
+			const data = await res.json();
+
+			if (!res.ok) {
+				console.error("Submission error:", data.error);
+			} else {
+				console.log("Score recorded");
+			}
+		} catch (err) {
+			console.error("Server error:", err);
+		}
+	};
+
+	useEffect(() => {
+		console.log(email, numCorrect);
+		submitScore();
+	}, [])
 
 	const finalMessages = [
 		"It is actually an incredible accomplishment to get all questions wrong. Show this to one of the helpers at the stall and you'll recieve a special prize",
