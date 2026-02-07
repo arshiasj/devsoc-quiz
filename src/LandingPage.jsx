@@ -2,39 +2,17 @@ import styles from './LandingPage.module.css';
 import devsocLogo from './assets/devsocLogo.png';
 import quizLogo from './assets/quizLogo.png';
 import { useNavigate } from 'react-router-dom';
-// import { db } from "./firebase";
 import { useState } from 'react';
-// import { ref, push } from "firebase/database";
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [emailConsent, setEmailConsent] = useState(false);
   const [valid, setValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
   const handleStart = async () => {
-    // if (email && emailConsent) {
-    //   try {
-    //     const emailsRef = ref(db, 'emails');
-    //     console.log(emailsRef);
-    //     await push(emailsRef, {
-    //       email: email,
-    //       timestamp: new Date().toISOString(),
-    //       consent: emailConsent
-    //     });
-    //     console.log('Email saved successfully');
-    //   } catch (error) {
-    //     console.error('Error saving email:', error);
-    //   }
-    // }
-    // if (email && valid) {
-    //   navigate('/questions-page');
-    // } else {
-    //   setErrorMessage('Email is required');
-    // }
     if (!email) {
       setErrorMessage("Email is required");
       return;
@@ -46,7 +24,7 @@ export default function LandingPage() {
     }
 
     try {
-      const res = await fetch("/api/start-quiz", {
+      const res = await fetch("https://us-central1-devsoc-quiz.cloudfunctions.net/api/start-quiz", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

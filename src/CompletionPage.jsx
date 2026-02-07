@@ -15,7 +15,7 @@ export default function CompletionPage() {
 
 	const submitScore = async () => {
 		try {
-			const res = await fetch("/api/submit-quiz", {
+			const res = await fetch("https://us-central1-devsoc-quiz.cloudfunctions.net/api/submit-quiz", {
 				method: "POST",
 				headers: {
 				"Content-Type": "application/json",
