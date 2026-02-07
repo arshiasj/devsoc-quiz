@@ -6,7 +6,7 @@ import CompletionPage from './CompletionPage';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/devsoc-quiz/">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/questions-page" element={<QuestionsPage />} />
