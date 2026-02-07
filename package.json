@@ -2,7 +2,7 @@
   "name": "devsoc-quiz",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://arshiasj.github.io/devsoc-quiz/",
+  "homepage": "https://arshiasj.github.io/devsoc-quiz",
   "type": "module",
   "scripts": {
     "dev": "vite",
