@@ -9,14 +9,14 @@ import { ref, push } from "firebase/database";
 export default function LandingPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [emailConsent, setEmailConsent] = useState(false);
+  // const [emailConsent, setEmailConsent] = useState(false);
   const [valid, setValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
   const handleStart = async () => {
-    if (email && emailConsent) {
+    if (email) {
       try {
         const emailsRef = ref(db, 'emails');
         console.log(emailsRef);
@@ -61,12 +61,12 @@ export default function LandingPage() {
       
       <input className={styles.emailInput} type='email' placeholder='Email...' onBlur={(e) => handleEmailInput(e)}/>
 
-      <div className={styles.emailConsent}>
+      {/* <div className={styles.emailConsent}>
         <input className={styles.emailNotifs} id='emailNotifs' type='checkbox' checked={emailConsent} onChange={(e) => setEmailConsent(e.target.checked)}/>
         <label>
           I agree to receive emails and notifications from DevSoc
         </label>
-      </div>
+      </div> */}
 
       <button onClick={handleStart} className={styles.startBtn}><b><em>START</em></b></button>
     </div>
