@@ -8,12 +8,48 @@ import four from "./assets/four.gif";
 import five from "./assets/five.jpg";
 import six from "./assets/six.jpg";
 import seven from "./assets/seven.jpg";
+import { ref, update } from "firebase/database";
+import { db } from "./firebase";
+import { useEffect } from "react";
 
 export default function CompletionPage() {
-	const { state } = useLocation();
-	const numCorrect = state?.numCorrect ?? 0;
-	const total = state?.total ?? 0;
+	const { email, numCorrect, total } = useLocation().state;
 
+	async function hashEmail(email) {
+    const normalized = email.trim().toLowerCase();
+
+    const encoder = new TextEncoder();
+    const data = encoder.encode(normalized);
+
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+    return hashArray
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+  }
+
+	const submitScore = async (email, numCorrect) => {
+		try {
+			const hashedEmail = await hashEmail(email);
+			const emailsRef = ref(db, 'emails/' + hashedEmail.toString());
+
+			await update(emailsRef, {
+				score: numCorrect,
+				ended: new Date().toISOString(),
+			});
+
+			console.log('Score saved successfully');
+		} catch (error) {
+			console.error('Error saving email:', error);
+		}
+	}
+
+	useEffect(() => {
+		console.log('Submitting score for:', email, numCorrect);
+		submitScore(email, numCorrect);
+	}, [email, numCorrect]);
+	
 	const finalMessages = [
 		"It is actually an incredible accomplishment to get all questions wrong. Show this to one of the helpers at the stall and you'll recieve a special prize",
 		"I don't know if I should be impressed or disappointed that you managed to get this score since you have access to a flyer with all the information from our stall",

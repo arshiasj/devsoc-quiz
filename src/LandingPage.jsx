@@ -4,35 +4,60 @@ import quizLogo from './assets/quizLogo.png';
 import { useNavigate } from 'react-router-dom';
 import { db } from "./firebase";
 import { useState } from 'react';
-import { ref, push } from "firebase/database";
+import { ref, set, get } from "firebase/database";
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [emailConsent, setEmailConsent] = useState(false);
   const [valid, setValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
+  async function hashEmail(email) {
+    const normalized = email.trim().toLowerCase();
+
+    const encoder = new TextEncoder();
+    const data = encoder.encode(normalized);
+
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+    return hashArray
+      .map(b => b.toString(16).padStart(2, '0'))
+      .join('');
+  }
+
   const handleStart = async () => {
-    if (email && emailConsent) {
-      try {
-        const emailsRef = ref(db, 'emails');
-        console.log(emailsRef);
-        await push(emailsRef, {
-          email: email,
-          timestamp: new Date().toISOString(),
-          consent: emailConsent
-        });
-        console.log('Email saved successfully');
-      } catch (error) {
-        console.error('Error saving email:', error);
-      }
+    if (!valid) {
+      setErrorMessage('Please enter a valid email');
+      return;
     }
 
-    navigate('/questions-page');
-  }
+    try {
+      const hashedEmail = await hashEmail(email);
+      const emailsRef = ref(db, 'emails/' + hashedEmail.toString());
+
+      const check = await get(emailsRef);
+
+      if (check.exists()) {
+        setErrorMessage('Emails can only be used once');
+        return;
+      }
+
+      await set(emailsRef, {
+        email,
+        started: new Date().toISOString(),
+      });
+
+      console.log('Email saved successfully');
+      navigate('/questions-page', { state: { email } });
+
+    } catch (error) {
+      console.error('Error saving email:', error);
+      setErrorMessage('Something went wrong. Please try again.');
+    }
+  };
 
   const handleEmailInput = (e) => {
     const newEmail = e.target.value;
@@ -59,14 +84,7 @@ export default function LandingPage() {
 
       {errorMessage && <p className={styles.error}>{errorMessage}</p>}
       
-      <input className={styles.emailInput} type='email' placeholder='Email...' onBlur={(e) => handleEmailInput(e)}/>
-
-      <div className={styles.emailConsent}>
-        <input className={styles.emailNotifs} id='emailNotifs' type='checkbox' checked={emailConsent} onChange={(e) => setEmailConsent(e.target.checked)}/>
-        <label>
-          I agree to receive emails and notifications from DevSoc
-        </label>
-      </div>
+      <input className={styles.emailInput} type='email' placeholder='Email...' onChange={(e) => handleEmailInput(e)}/>
 
       <button onClick={handleStart} className={styles.startBtn}><b><em>START</em></b></button>
     </div>
