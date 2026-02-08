@@ -58,7 +58,7 @@ export default function QuestionsPage() {
       answer: "structs"
     },
     { id: 2,
-      question: "A student looking to plan their classes for each course ahead of time should use this",
+      question: "A few weeks before a term starts, this project opens for students to plan their classes ahead of time]",
       answer: "notangles"
     },
     { id: 3,
