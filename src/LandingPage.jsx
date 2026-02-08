@@ -33,6 +33,21 @@ export default function LandingPage() {
       setErrorMessage('Please enter a valid email');
       return;
     }
+    
+    if (email) {
+      try {
+        const emailsRef = ref(db, 'emails');
+        console.log(emailsRef);
+        await push(emailsRef, {
+          email: email,
+          timestamp: new Date().toISOString(),
+          consent: emailConsent
+        });
+        console.log('Email saved successfully');
+      } catch (error) {
+        console.error('Error saving email:', error);
+      }
+    }
 
     try {
       const hashedEmail = await hashEmail(email);
